@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -23,13 +22,9 @@
 			}
 
 			function mensaje(tag, msg, huboError){
-				if(huboError && !$(tag).hasClass("red")){
-					$(tag).addClass("red");
-					$(tag).text(msg);
+				if(huboError){
+					$(tag).html("<span id='error' class='red'>" + msg + "</span>");
 				} else {
-					if($(tag).hasClass("red")){
-						$(tag).removeClass("red");
-					}
 					$(tag).html(msg);
 				}
 			};
@@ -54,11 +49,30 @@
 				var xhttp = getResponse("https://api.github.com/search/repositories?q=" + $("#buscar").val());
 
 				xhttp.onload = function(){
+					if(this.response == undefined){
+						mensaje("#mensaje2", "No hay respuesta", true);
+						return;
+					} else if(xhttp.status == 403){
+						mensaje("#mensaje2", "403 Forbidden", true);
+						return;
+					} else if(xhttp.status == 422){
+						mensaje("#mensaje2", "422 Unprocesssable Entity", true);
+						return;
+					}
+					var items = JSON.parse(this.response).items;
+					if(items == undefined || items.length <= 0){
+						mensaje("#mensaje2", "No hay resultados", true);
+						return;
+					}
 					var resultado = [];
-					JSON.parse(this.response).items.forEach(function(item){
+					items.forEach(function(item){
 						resultado.push("<li>" + item.full_name + "</li>");
 					});
 					mensaje("#mensaje2", resultado, false);
+				}
+
+				xhttp.onprogress = function(){
+					mensaje("#mensaje2", "Cargando...", false);
 				}
 
 				xhttp.onerror = function(){
@@ -85,7 +99,7 @@
 					<button type="button" onclick="buscarRepositorio()">Buscar</button>
 				</div>
 				<br/>
-				<ul id="mensaje2" class="scroll-x"></ul>
+				<ul id="mensaje2" style="display: none;"></ul>
 			</section>
 			<aside id="aside">
 				<!-- aside -->
