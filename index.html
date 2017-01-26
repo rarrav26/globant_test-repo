@@ -1,10 +1,99 @@
+
+<!DOCTYPE html>
 <html>
 	<head>
-		<title>Testing Git Shell</title>
+		<meta charset="UTF-8">
+		<title>Topic 1: Practice</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/reset.css">
+		<link rel="stylesheet" type="text/css" href="css/normalize.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#section").children().each(function(){
+					$(this).fadeIn(1000);
+				});
+			});
+
+			function getResponse(url){
+				var xhttp = new XMLHttpRequest();
+				xhttp.open("GET", url, true);
+				xhttp.send();
+				return xhttp;
+			}
+
+			function mensaje(tag, msg, huboError){
+				if(huboError && !$(tag).hasClass("red")){
+					$(tag).addClass("red");
+					$(tag).text(msg);
+				} else {
+					if($(tag).hasClass("red")){
+						$(tag).removeClass("red");
+					}
+					$(tag).html(msg);
+				}
+			};
+
+			function botonClick(){
+				$("#mensaje").fadeOut('slow', function(){
+					var xhttp = getResponse("http://api.icndb.com/jokes/random");
+
+					xhttp.onload = function(){
+						mensaje("#mensaje", JSON.parse(this.response).value.joke, false);
+					}
+
+					xhttp.onerror = function(){
+						mensaje("#mensaje", "ERROR", true);
+					}
+
+					setTimeout(function(){$("#mensaje").fadeIn('slow');}, 1000);
+				});
+			};
+
+			function buscarRepositorio(){
+				var xhttp = getResponse("https://api.github.com/search/repositories?q=" + $("#busqueda").val());
+
+				xhttp.onload = function(){
+					var resultado = [];
+					JSON.parse(this.response).items.forEach(function(item){
+						resultado.push("<li>" + item.full_name + "</li>");
+					});
+					mensaje("#mensaje2", resultado, false);
+				}
+
+				xhttp.onerror = function(){
+					mensaje("#mensaje2", "ERROR", true);
+				}
+			};
+		</script>
 	</head>
 	<body>
-		<center><h1>Testing Git Shell</h1></center>
-		<br/>
-		<p>Just testing...</p>
+		<div id="contenedor">
+			<header id="header">
+				<!-- header -->
+			</header>
+			<nav id="nav">
+				<!-- nav -->
+			</nav>
+			<section id="section">
+				<h2 id="mensaje" style="display: none;">Hello world</h2>
+				<button type="button" style="display: none;" onclick="botonClick()">Enviar</button>
+				<br/>
+				<br/>
+				<div style="display: none;">
+					<input id="busqueda" type="text"/>
+					<button type="button" onclick="buscarRepositorio()">Buscar</button>
+				</div>
+				<br/>
+				<ul id="mensaje2" class="scroll-x"></ul>
+			</section>
+			<aside id="aside">
+				<!-- aside -->
+			</aside>
+			<div class="clear"></div>
+			<footer id="footer">
+				<!-- footer -->
+			</footer>
+		</div>
 	</body>
 </html>

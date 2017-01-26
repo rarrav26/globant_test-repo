@@ -1,0 +1,70 @@
+body {
+	text-align: center;
+}
+
+.red {
+	background: red;
+}
+
+h2 {
+    font-size: 14px;
+}
+
+#contenedor {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+#header {
+	padding: 1%;
+	width: 98%;
+	height: 100px;
+	background: orange;
+}
+
+#nav, #section, #aside {
+	padding: 1%;
+	height: 400px;
+}
+
+#nav {
+	background: red;
+	width: 18%;
+	float: left;
+}
+
+#section {
+	background: green;
+	width: 58%;
+	float: left;
+}
+
+#aside {
+	background: yellow;
+	width: 18%;
+	float: right;
+}
+
+#footer {
+	padding: 10px;
+	background: blue;
+	width: 98%;
+	height: 100px;
+}
+
+.clear {
+	clear: both;
+}
+
+button {
+	margin-top: 10px;
+}
+
+#mensaje2 {
+	height: 280px;
+	background: rgba(128, 128, 128, 0.65);
+}
+
+.scroll-x {
+	overflow-x: auto;
+}
