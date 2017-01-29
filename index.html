@@ -19,7 +19,7 @@
 				xhttp.open("GET", url, true);
 				xhttp.send();
 				return xhttp;
-			}
+			};
 
 			function mensaje(tag, msg, huboError){
 				if(huboError){
@@ -79,6 +79,48 @@
 					mensaje("#mensaje2", "ERROR", true);
 				}
 			};
+
+			function random(min, max){
+				max -= min;
+				return Math.round(Math.random() * max + min);
+			};
+
+			function randomMatrix(rows, columns){
+				var matrix = [];
+				for(var i = 0; i < rows; i++){
+					matrix[i] = [];
+					for(var j = 0; j < columns; j++){
+						matrix[i][j] = Math.round(Math.random() * 9);
+					}
+				}
+				return matrix;
+			};
+
+			function matrixToDOM(matrix){
+				var table = document.createElement("table");
+				var tbody = document.createElement("tbody");
+				var i = 0, j = 0;
+				while(matrix[i] != undefined){
+					var tr = document.createElement("tr");
+					while(matrix[i][j] != undefined){
+						var td = document.createElement("td");
+						var value = document.createTextNode(matrix[i][j]);
+						td.appendChild(value);
+						tr.appendChild(td);
+						j++;
+					}
+					tbody.appendChild(tr);
+					j = 0;
+					i++;
+				}
+				table.appendChild(tbody);
+				var nav = document.getElementsByTagName("nav")[0];
+				if(nav.childNodes.length > 3){
+					nav.removeChild(nav.childNodes[3]);
+				}
+				nav.appendChild(table);
+				table.setAttribute("style", "width: 70%; margin: 10px auto 0; border: 2px solid; border-collapse: initial; padding: 2px;");
+			};
 		</script>
 	</head>
 	<body>
@@ -87,7 +129,7 @@
 				<!-- header -->
 			</header>
 			<nav id="nav">
-				<!-- nav -->
+				<button id="tableCreator" type="button" onclick="matrixToDOM(randomMatrix(random(2, 5), random(2, 5)))">Crear Tabla</button>
 			</nav>
 			<section id="section">
 				<h2 id="mensaje" style="display: none;">Hello world</h2>
