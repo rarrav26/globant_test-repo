@@ -86,12 +86,11 @@
 			};
 
 			function randomMatrix(rows, columns, min, max){
-				max -= min;
 				var matrix = [];
 				for(var i = 0; i < rows; i++){
 					matrix[i] = [];
 					for(var j = 0; j < columns; j++){
-						matrix[i][j] = Math.round(Math.random() * max + min);
+						matrix[i][j] = random(min, max);
 					}
 				}
 				return matrix;
